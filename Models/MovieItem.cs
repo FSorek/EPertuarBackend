@@ -20,7 +20,6 @@ namespace EPertuarWeb.Models
         public String Music { get; set; }
         public String Cinematography { get; set; }
         public String Rating { get; set; }
-        public List<int> Id_cinemas { get; set; }
         public List<ShowItem> Shows { get; set; }
         public List<String> Genre { get; set; }
     }

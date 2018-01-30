@@ -68,7 +68,7 @@ namespace EPertuarWeb.Data.Deserialization
                     {
                         mappedList.Add(new ShowItem
                         {
-                            Id_Movie = from.Id,
+                            Id_Movie = Int32.Parse(from.Id),
                             Id_Cinema = cinemaId,
                             ShowDate = show.DateTime,
                             Start = time.PurpleTime,

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EPertuarWeb.Models;
 using EPertuarWeb.Data.Access;
@@ -8,15 +9,9 @@ namespace EPertuarWeb.Data.Deserialization
     public class CinemaCityDeserializer
     {
         private CinemaCity root;
-        //private string json;
 
         public List<MovieItem> Deserialize(string json, int cinemaId)
         {
-            //using (var reader = new StreamReader(dataStream))
-            //{
-            //    json = reader.ReadToEnd();
-            //    root = CinemaCity.FromJson(json);
-            //}
             root = CinemaCity.FromJson(json);
 
             return MapMovie(root, cinemaId);
@@ -64,7 +59,7 @@ namespace EPertuarWeb.Data.Deserialization
                 if (show.FilmId != id) continue;
                     mappedList.Add(new ShowItem
                     {
-                        Id_Movie = id,
+                        Id_Movie = Int32.Parse(id),
                         Id_Cinema = cinemaId,
                         ShowDate = show.BusinessDay,
                         Start = show.EventDateTime.Remove(0,10),
