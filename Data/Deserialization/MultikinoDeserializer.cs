@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EPertuarWeb.Models;
 using EPertuarWeb.Data.Access;
+using EPertuarWeb.Data.Download;
 
 namespace EPertuarWeb.Data.Deserialization
 {
@@ -59,6 +61,9 @@ namespace EPertuarWeb.Data.Deserialization
         {
             List<ShowItem> mappedList = new List<ShowItem>();
             var today = DateTime.Today;
+            String sql = String.Format("select Id_Cinema from Cinema Where Id_Self = {0} AND CinemaType = {1}", cinemaId, (int)CinemaType.multikino);
+            SqlConnection con = new SqlConnection(Startup.builder.ConnectionString);
+            con.Open();
 
             foreach (Showing show in from.Showings)
             {
@@ -66,19 +71,31 @@ namespace EPertuarWeb.Data.Deserialization
                 {
                     if (show.DateTime.Date.Equals(today.Date))
                     {
-                        mappedList.Add(new ShowItem
+                        using (SqlCommand command = new SqlCommand(sql, con))
                         {
-                            Id_Movie = Int32.Parse(from.Id),
-                            Id_Cinema = cinemaId,
-                            ShowDate = show.DateTime,
-                            Start = time.PurpleTime,
-                            is3D = (time.ScreenType == "3D"),
-                            Language = time.Tags[0].Name,
-                            Room = -1
-                        });
+                            using (SqlDataReader reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    mappedList.Add(new ShowItem
+                                    {
+                                        Id_Movie = Int32.Parse(from.Id),
+                                        Id_Cinema = reader.GetInt32(0),
+                                        ShowDate = show.DateTime,
+                                        Start = time.PurpleTime,
+                                        is3D = (time.ScreenType == "3D"),
+                                        Language = time.Tags[0].Name,
+                                        Room = -1
+                                    });
+                                }
+                            }
+                            
+                        }
+
                     }
                 }
             }
+            con.Close();
             return mappedList;
         }
     }

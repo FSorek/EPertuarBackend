@@ -27,5 +27,12 @@ namespace EPertuarWeb.Controllers
             }
             return movie;
         }
+        [Route("Cities")]
+        [HttpGet]
+        public string GetAllCities()
+        {
+
+            return "xD";
+        }
     }
 }
