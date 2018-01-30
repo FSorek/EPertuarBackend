@@ -36,7 +36,7 @@ namespace EPertuarWeb
             try
             {
                 DataRequestService request = new DataRequestService();
-                //UpdateDatabase(request);
+                UpdateDatabase(request);
             }
             catch (SqlException e)
             {
