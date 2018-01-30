@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using EPertuarWeb.Data.Download;
 using EPertuarWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +14,8 @@ namespace EPertuarWeb.Controllers
     [Route("api/Movie")]
     public class MovieController : Controller
     {
+        SqlConnection con = new SqlConnection(Startup.builder.ConnectionString);
+        
         private MovieItem[] movies = new MovieItem[]
         {
             new MovieItem{Id = 3, Id_Movie = "Film", Cinematography = "", Director = "Michael Bay", Genre = new List<string>{"Action", "Horror"}, Length = 90},
@@ -26,13 +30,6 @@ namespace EPertuarWeb.Controllers
                 return null;
             }
             return movie;
-        }
-        [Route("Cities")]
-        [HttpGet]
-        public string GetAllCities()
-        {
-
-            return "xD";
         }
     }
 }
