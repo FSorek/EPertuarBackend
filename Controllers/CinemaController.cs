@@ -12,7 +12,7 @@ namespace EPertuarWeb.Controllers
     [Route("api/Cinema")]
     public class CinemaController : Controller
     {
-        SqlConnection con = new SqlConnection(Startup.builder.ConnectionString);
+        SqlConnection con = new SqlConnection(Program.builder.ConnectionString);
 
         [Route("Cities")]
         [HttpGet]

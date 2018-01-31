@@ -62,7 +62,7 @@ namespace EPertuarWeb.Data.Deserialization
             List<ShowItem> mappedList = new List<ShowItem>();
             var today = DateTime.Today;
             String sql = String.Format("select Id_Cinema from Cinema Where Id_Self = {0} AND CinemaType = {1}", cinemaId, (int)CinemaType.multikino);
-            SqlConnection con = new SqlConnection(Startup.builder.ConnectionString);
+            SqlConnection con = new SqlConnection(Program.builder.ConnectionString);
             con.Open();
 
             foreach (Showing show in from.Showings)
