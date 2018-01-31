@@ -21,7 +21,7 @@ namespace EPertuarWeb
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -39,7 +39,7 @@ namespace EPertuarWeb
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseMvc();
         }
     }
