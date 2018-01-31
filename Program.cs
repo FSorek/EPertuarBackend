@@ -45,7 +45,7 @@ namespace EPertuarWeb
 
         private static void UpdateDatabase(DataRequestService request)
         {
-            using (SqlConnection con = new SqlConnection(Program.builder.ConnectionString))
+            using (SqlConnection con = new SqlConnection(builder.ConnectionString))
             {
                 Debug.WriteLine("UpdataDB");
                 con.Open();

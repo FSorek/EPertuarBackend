@@ -14,7 +14,7 @@ namespace EPertuarWeb.Controllers
     [Route("api/Movie")]
     public class MovieController : Controller
     {
-        SqlConnection con = new SqlConnection(Startup.builder.ConnectionString);
+        SqlConnection con = new SqlConnection(Program.builder.ConnectionString);
         
         private MovieItem[] movies = new MovieItem[]
         {
