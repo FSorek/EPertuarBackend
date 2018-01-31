@@ -28,7 +28,7 @@ namespace EPertuarWeb
 
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            
 
             try
             {
@@ -41,6 +41,9 @@ namespace EPertuarWeb
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.LineNumber);
             }
+
+
+            BuildWebHost(args).Run();
         }
 
         private static void UpdateDatabase(DataRequestService request)
