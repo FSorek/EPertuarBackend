@@ -163,11 +163,28 @@ namespace EPertuarWeb.Controllers
                         movie.Genre = new List<string>();
                         movie = AddShows(cinemaItem, movie);
                         movie = AddGenres(movie);
+                        movie = getMovieInfo(movie);
                         cinemaItem.MoviesPlayed.Add(movie);
                     }
                 }
             }
             return ShowsView;
+        }
+
+        private MovieItem getMovieInfo(MovieItem movie)
+        {
+            using (SqlCommand getMoviesPlayed = new SqlCommand(@"SELECT * FROM MOVIE WHERE Original_Name='"+movie.Original_Name+"'", con)
+            )
+            {
+                using (SqlDataReader movieReader = getMoviesPlayed.ExecuteReader())
+                {
+                    while (movieReader.Read())
+                    {
+                        movie.Id = movieReader.GetInt32(0);
+                    }
+                }
+            }
+            return movie;
         }
 
         public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
