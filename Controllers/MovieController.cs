@@ -15,21 +15,67 @@ namespace EPertuarWeb.Controllers
     public class MovieController : Controller
     {
         SqlConnection con = new SqlConnection(Program.builder.ConnectionString);
-        
-        private MovieItem[] movies = new MovieItem[]
-        {
-            new MovieItem{Id = 3, Id_Movie = "Film", Cinematography = "", Director = "Michael Bay", Genre = new List<string>{"Action", "Horror"}, Length = 90},
-        };
 
         [HttpGet("{id}")]
-        public MovieItem GetProduct(int id)
+        public MovieItem GetMovie(int id)
         {
-            var movie = movies.FirstOrDefault((p) => p.Id == id);
-            if (movie == null)
+            con.Open();
+            
+            var movie = new MovieItem();
+            using (SqlCommand getMovie =
+                new SqlCommand(@"Select * from Movie WHERE Id_Movie=" + id,
+                    con)
+            )
             {
-                return null;
+                using (SqlDataReader reader = getMovie.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        movie = new MovieItem()
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Original_Name = reader.GetString(2),
+                            Length = reader.GetInt32(3),
+                            Director = reader.GetString(4),
+                            Writers = reader.GetString(5),
+                            Stars = reader.GetString(6),
+                            Storyline = reader.GetString(7),
+                            Trailer = reader.GetString(8),
+                            Music = reader.GetString(9),
+                            Cinematography = reader.GetString(10),
+                            Rating = reader.GetString(11),
+                            Id_Movie = reader.GetString(12)
+                        };
+                    }
+                }
             }
+
+            con.Close();
             return movie;
+        }
+
+        [Route("Genres")]
+        [HttpGet]
+        public String[] GetAllGenres()
+        {
+            con.Open();
+            List<String> genres = new List<string>();
+            using (SqlCommand getMultikinos =
+                new SqlCommand(@"Select Name from Genre",
+                    con)
+            )
+            {
+                using (SqlDataReader reader = getMultikinos.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        genres.Add(reader.GetString(0));
+                    }
+                }
+            }
+            con.Close();
+            return genres.ToArray();
         }
     }
 }
