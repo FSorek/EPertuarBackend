@@ -10,9 +10,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using EPertuarWeb.Data.Download;
 using EPertuarWeb.Models;
+
 
 namespace EPertuarWeb
 {
@@ -21,7 +23,6 @@ namespace EPertuarWeb
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            
         }
 
         public IConfiguration Configuration { get; }

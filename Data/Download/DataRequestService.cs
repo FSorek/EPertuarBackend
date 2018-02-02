@@ -80,6 +80,7 @@ namespace EPertuarWeb.Data.Download
                     MovieList = cinemaCityDeserializer.Deserialize(dataString, cinemaId);
                     break;
             }
+            
         }
     }
 }
