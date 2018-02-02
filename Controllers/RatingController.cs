@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using EPertuarWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Tracing;
+using Microsoft.ApplicationInsights;
 
 namespace EPertuarWeb.Controllers
 {
@@ -61,6 +63,7 @@ namespace EPertuarWeb.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] RatingItem item)
         {
+            var telemetry = new TelemetryClient();
             try
             {
                 if (item == null)
@@ -83,10 +86,9 @@ namespace EPertuarWeb.Controllers
                     addRating.ExecuteNonQuery();
                 }
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.StackTrace);
-                Console.WriteLine(ex.Message);
+                telemetry.TrackException(ex);
             }
 
             con.Close();
