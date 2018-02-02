@@ -2,19 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
+using J = Newtonsoft.Json.JsonPropertyAttribute;
 namespace EPertuarWeb.Models
 {
     public class RatingItem
     {
-        public int Id_User { get; set; }
-        public int Id_Cinema { get; set; }
-        public int Id_Movie { get; set; }
-        public String Id_StringUser { get; set; }
-        public int Screen { get; set; }
-        public int Seat { get; set; }
-        public int Sound { get; set; }
-        public int Popcorn { get; set; }
-        public int Cleanliness { get; set; }
+        [J("cleanliness")] public long Cleanliness { get; set; }
+        [J("id_Cinema")] public long Id_Cinema { get; set; }
+        [J("id_Movie")] public long Id_Movie { get; set; }
+        [J("id_StringUser")] public string Id_StringUser { get; set; }
+        [J("id_User")] public long Id_User { get; set; }
+        [J("popcorn")] public long Popcorn { get; set; }
+        [J("screen")] public long Screen { get; set; }
+        [J("seat")] public long Seat { get; set; }
+        [J("sound")] public long Sound { get; set; }
+        public List<RatingItem> FromJson(string json) => JsonConvert.DeserializeObject<List<RatingItem>>(json, Converter.Settings);
+    }
+
+    public static class Serialize
+    {
+        public static string ToJson(this List<RatingItem> self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }
+
+    public class Converter
+    {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+        };
     }
 }
