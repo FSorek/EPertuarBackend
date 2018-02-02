@@ -61,25 +61,33 @@ namespace EPertuarWeb.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] RatingItem item)
         {
-            if (item == null)
-                return BadRequest();
-            con.Open();
-
-            item = GetUser(item);
-            if (CheckExistingRating(item))
-                return BadRequest();
-
-            using (SqlCommand addRating =
-                new SqlCommand(String.Format(@"INSERT INTO USERRATING
-                              (ID_USER, ID_MOVIE, ID_CINEMA, ID_STRINGUSER, CLEANLINESS, POPCORN, SCREEN, SEAT, SOUND)
-                        VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", item.Id_User, item.Id_Movie, item.Id_Cinema
-                    ,item.Id_StringUser, item.Cleanliness, item.Popcorn, item.Screen, item.Seat, item.Sound),
-                    con)
-            )
+            try
             {
-                addRating.ExecuteNonQuery();
-            }
+                if (item == null)
+                    return BadRequest();
+                con.Open();
 
+                item = GetUser(item);
+                if (CheckExistingRating(item))
+                    return BadRequest();
+
+                using (SqlCommand addRating =
+                    new SqlCommand(String.Format(@"INSERT INTO USERRATING
+                              (ID_USER, ID_MOVIE, ID_CINEMA, ID_STRINGUSER, CLEANLINESS, POPCORN, SCREEN, SEAT, SOUND)
+                        VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", item.Id_User, item.Id_Movie,
+                            item.Id_Cinema
+                            , item.Id_StringUser, item.Cleanliness, item.Popcorn, item.Screen, item.Seat, item.Sound),
+                        con)
+                )
+                {
+                    addRating.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
+            }
 
             con.Close();
             return Ok();
