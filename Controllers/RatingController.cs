@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,7 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Tracing;
 using Microsoft.ApplicationInsights;
-
+using Newtonsoft.Json;
+using J = Newtonsoft.Json.JsonPropertyAttribute;
 namespace EPertuarWeb.Controllers
 {
     [Produces("application/json")]
@@ -59,11 +61,9 @@ namespace EPertuarWeb.Controllers
        //     client.PostAsync("http://localhost:50289/api/Rating", content);
        //     return ids;
        // }
-
         [HttpPost]
-        public IActionResult Post([FromBody] RatingItem item)
+        public IActionResult Post([FromForm] RatingItem item)
         {
-            var telemetry = new TelemetryClient();
             try
             {
                 if (item == null)
@@ -85,20 +85,23 @@ namespace EPertuarWeb.Controllers
                 {
                     addRating.ExecuteNonQuery();
                 }
+
+
+                con.Close();
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                telemetry.TrackException(ex);
+                Debug.WriteLine(ex.StackTrace);
+                Debug.WriteLine(ex.Message);
             }
 
-            con.Close();
             return Ok();
         }
 
         private bool CheckExistingRating(RatingItem item)
         {
             using (SqlCommand getRating =
-                new SqlCommand(String.Format(@"SELECT * FROM [USERRATING] WHERE Id_User='{0}' AND Id_Cinema={1}, AND Id_Movie={2}", item.Id_User, item.Id_Cinema, item.Id_Movie),
+                new SqlCommand(String.Format(@"SELECT * FROM [USERRATING] WHERE Id_User={0} AND Id_Cinema={1}, AND Id_Movie={2}", item.Id_User, item.Id_Cinema, item.Id_Movie),
                     con)
             )
             {
