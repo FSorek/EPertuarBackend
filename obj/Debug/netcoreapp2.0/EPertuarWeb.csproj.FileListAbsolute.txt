@@ -9,3 +9,14 @@ c:\users\okito\source\repos\EPertuarWeb\obj\Debug\netcoreapp2.0\EPertuarWeb.Asse
 c:\users\okito\source\repos\EPertuarWeb\obj\Debug\netcoreapp2.0\EPertuarWeb.AssemblyInfo.cs
 c:\users\okito\source\repos\EPertuarWeb\obj\Debug\netcoreapp2.0\EPertuarWeb.dll
 c:\users\okito\source\repos\EPertuarWeb\obj\Debug\netcoreapp2.0\EPertuarWeb.pdb
+D:\Git\EPertuarBackend\bin\Debug\netcoreapp2.0\EPertuarWeb.deps.json
+D:\Git\EPertuarBackend\bin\Debug\netcoreapp2.0\EPertuarWeb.runtimeconfig.json
+D:\Git\EPertuarBackend\bin\Debug\netcoreapp2.0\EPertuarWeb.runtimeconfig.dev.json
+D:\Git\EPertuarBackend\bin\Debug\netcoreapp2.0\EPertuarWeb.dll
+D:\Git\EPertuarBackend\bin\Debug\netcoreapp2.0\EPertuarWeb.pdb
+D:\Git\EPertuarBackend\obj\Debug\netcoreapp2.0\EPertuarWeb.csprojResolveAssemblyReference.cache
+D:\Git\EPertuarBackend\obj\Debug\netcoreapp2.0\EPertuarWeb.csproj.CoreCompileInputs.cache
+D:\Git\EPertuarBackend\obj\Debug\netcoreapp2.0\EPertuarWeb.AssemblyInfoInputs.cache
+D:\Git\EPertuarBackend\obj\Debug\netcoreapp2.0\EPertuarWeb.AssemblyInfo.cs
+D:\Git\EPertuarBackend\obj\Debug\netcoreapp2.0\EPertuarWeb.dll
+D:\Git\EPertuarBackend\obj\Debug\netcoreapp2.0\EPertuarWeb.pdb

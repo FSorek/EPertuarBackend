@@ -21,6 +21,7 @@ namespace EPertuarWeb.Controllers
         {
             List<ShowsViewItem> ShowsView = new List<ShowsViewItem>();
             con.Open();
+            
             ShowsView = GetCinemasByCity(City, ShowsView);
             ShowsView = GetMovies(ShowsView);
 
@@ -97,50 +98,53 @@ namespace EPertuarWeb.Controllers
             return ShowsView;
         }
 
-        private CompactMovie AddShows(ShowsViewItem cinemaItem, CompactMovie movie)
+        private List<CompactMovie> AddShows(ShowsViewItem cinemaItem)
         {
-            using (SqlCommand getShows = new SqlCommand(@"Select ShowDate, [Start], is3D, [Language] from Show 
+            using (SqlCommand getShows = new SqlCommand(@"Select Movie.Original_Name, ShowDate, [Start], is3D, [Language] from Show 
                                                                 INNER JOIN Movie ON Show.Id_Movie=Movie.Id_Movie 
                                                                 INNER JOIN Cinema ON Show.Id_Cinema=Cinema.Id_Cinema
-                                                                WHERE Cinema.Id_Cinema=" + cinemaItem.IdCinema + @"
-                                                                AND Movie.Original_Name='" + movie.MovieName + "'", con)
+                                                                WHERE Cinema.Id_Cinema=" + cinemaItem.IdCinema, con)
             )
             {
                 using (SqlDataReader reader = getShows.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        movie.ShowList.Add(new CompactShow()
+                        var currentMovie = cinemaItem.Movies.Where(m => m.MovieName == reader.GetString(0)).First();
+                        currentMovie.ShowList.Add(new CompactShow()
                         {
-                            ShowDate = reader.GetDateTime(0),
-                            Start = reader.GetString(1),
-                            Is3D = reader.GetInt32(2) == 1,
-                            Language = reader.GetString(3)
+                            ShowDate = reader.GetDateTime(1),
+                            Start = reader.GetString(2),
+                            Is3D = reader.GetInt32(3) == 1,
+                            Language = reader.GetString(4)
                         });
                     }
                 }
             }
-            return movie;
+
+                return cinemaItem.Movies;
         }
 
-        private CompactMovie AddGenres(CompactMovie movie)
+        private List<CompactMovie> AddGenres(ShowsViewItem cinemaItem)
         {
-            using (SqlCommand getGenres = new SqlCommand(@"select Genre.[Name] from MovieGotGenre 
+            using (SqlCommand getGenres = new SqlCommand(@"select Movie.Original_Name, Genre.[Name] from MovieGotGenre 
                                                                         INNER JOIN Genre ON MovieGotGenre.Id_Genre=Genre.Id_Genre 
-                                                                        INNER JOIN Movie ON MovieGotGenre.Id_Movie=Movie.Id_Movie 
-                                                                        WHERE Movie.[Original_Name] ='" + movie.MovieName + "'", con)
+                                                                        INNER JOIN Movie ON MovieGotGenre.Id_Movie=Movie.Id_Movie
+                                                                        INNER JOIN Show ON MovieGotGenre.Id_Movie=Show.Id_Movie
+                                                                        WHERE Show.Id_Cinema=" + cinemaItem.IdCinema, con)
             )
             {
                 using (SqlDataReader reader = getGenres.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        movie.Genres.Add(reader.GetString(0));
+                        var currentMovie = cinemaItem.Movies.Where(m => m.MovieName == reader.GetString(0)).First();
+                        currentMovie.Genres.Add(reader.GetString(1));
                     }
                 }
             }
 
-            return movie;
+            return cinemaItem.Movies;
         }
 
         private List<ShowsViewItem> GetMovies(List<ShowsViewItem> ShowsView)
@@ -152,39 +156,42 @@ namespace EPertuarWeb.Controllers
                                                                 WHERE Cinema.Id_Cinema=" + cinemaItem.IdCinema + @"
                                                                 GROUP BY Movie.[Original_Name]", con)
             )
-            {
-                using (SqlDataReader movieReader = getMoviesPlayed.ExecuteReader())
                 {
-                    while (movieReader.Read())
+                    using (SqlDataReader movieReader = getMoviesPlayed.ExecuteReader())
                     {
-                        CompactMovie movie = new CompactMovie();
-                        movie.MovieName = movieReader.GetString(0);
-                        movie.ShowList = new List<CompactShow>();
-                        movie.Genres = new List<string>();
-                        movie = AddShows(cinemaItem, movie);
-                        movie = AddGenres(movie);
-                        movie = getMovieInfo(movie);
-                        cinemaItem.Movies.Add(movie);
+                        while (movieReader.Read())
+                        {
+                            CompactMovie movie = new CompactMovie();
+                            movie.MovieName = movieReader.GetString(0);
+                            movie.ShowList = new List<CompactShow>();
+                            movie.Genres = new List<string>();
+                            cinemaItem.Movies.Add(movie);
+                        }
+                        cinemaItem.Movies = AddShows(cinemaItem);
+                        cinemaItem.Movies = AddGenres(cinemaItem);
+                        cinemaItem.Movies = getMovieInfo(cinemaItem);
                     }
                 }
-            }
             return ShowsView;
         }
 
-        private CompactMovie getMovieInfo(CompactMovie movie)
+        private List<CompactMovie> getMovieInfo(ShowsViewItem cinemaItem)
         {
-            using (SqlCommand getMoviesPlayed = new SqlCommand(@"SELECT * FROM MOVIE WHERE Original_Name='"+movie.MovieName+"'", con)
+            using (SqlCommand getMoviesPlayed = new SqlCommand(@"SELECT Movie.Original_Name, Movie.[Id_Movie] FROM MOVIE 
+                                                                        INNER JOIN Show ON Movie.Id_Movie=Show.Id_Movie
+                                                                        WHERE Show.Id_Cinema=" + cinemaItem.IdCinema, con)
             )
             {
                 using (SqlDataReader movieReader = getMoviesPlayed.ExecuteReader())
                 {
                     while (movieReader.Read())
                     {
-                        movie.id = movieReader.GetInt32(0);
+                        var currentMovie = cinemaItem.Movies.Where(m => m.MovieName == movieReader.GetString(0)).First();
+                        currentMovie.id = movieReader.GetInt32(1);
                     }
                 }
             }
-            return movie;
+            return cinemaItem.Movies;
         }
 
         public double CalculateDistance(double lat1, double lon1, double lat2, double lon2)

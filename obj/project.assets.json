@@ -13105,15 +13105,12 @@
   },
   "project": {
     "version": "1.0.0",
-    "restoreSettings": {
-      "hideWarningsAndErrors": true
-    },
     "restore": {
-      "projectUniqueName": "C:\\Users\\okito\\source\\repos\\EPertuarWeb\\EPertuarWeb.csproj",
+      "projectUniqueName": "D:\\Git\\EPertuarBackend\\EPertuarWeb.csproj",
       "projectName": "EPertuarWeb",
-      "projectPath": "C:\\Users\\okito\\source\\repos\\EPertuarWeb\\EPertuarWeb.csproj",
+      "projectPath": "D:\\Git\\EPertuarBackend\\EPertuarWeb.csproj",
       "packagesPath": "C:\\Users\\okito\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\okito\\source\\repos\\EPertuarWeb\\obj\\",
+      "outputPath": "D:\\Git\\EPertuarBackend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -13143,22 +13140,22 @@
     "frameworks": {
       "netcoreapp2.0": {
         "dependencies": {
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+          "Microsoft.AspNetCore.All": {
             "target": "Package",
-            "version": "2.0.0"
+            "version": "[2.0.3, )"
           },
           "Microsoft.NETCore.App": {
             "target": "Package",
-            "version": "2.0",
+            "version": "[2.0.0, )",
             "autoReferenced": true
           },
-          "Microsoft.AspNetCore.All": {
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
-            "version": "2.0.3"
+            "version": "[2.0.0, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
-            "version": "10.0.3"
+            "version": "[10.0.3, )"
           }
         },
         "imports": [
