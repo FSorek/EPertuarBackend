@@ -154,7 +154,7 @@ namespace EPertuarWeb.Controllers
                                                                 AS Average from Show 
                                                                 INNER JOIN Movie ON Show.Id_Movie=Movie.Id_Movie 
                                                                 INNER JOIN Cinema ON Show.Id_Cinema=Cinema.Id_Cinema
-                                                                LEFT JOIN UserRating ON Movie.Id_Movie=UserRating.Id_Movie
+                                                                LEFT JOIN UserRating ON Movie.Id_Movie=UserRating.Id_Movie AND Show.Id_Cinema=UserRating.Id_Cinema
                                                                 WHERE Cinema.Id_Cinema=" + cinemaItem.IdCinema + @"
                                                                 GROUP BY Movie.[Original_Name]", con)
             )
