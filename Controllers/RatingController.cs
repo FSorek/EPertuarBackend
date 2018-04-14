@@ -53,31 +53,23 @@ namespace EPertuarWeb.Controllers
             con.Close();
             return rating;
         }
-       // [HttpGet("{id}")]
-       // public List<int> Get(int id)
-       // {
-       //     HttpClient client = new HttpClient();
-       //     var content = new StringContent(id.ToString());
-       //     client.PostAsync("http://localhost:50289/api/Rating", content);
-       //     return ids;
-       // }
+
         [HttpPost]
-        public IActionResult Post([FromForm] RatingItem item)
+        public IActionResult Post([FromBody] RatingItem item)
         {
             try
             {
                 if (item == null)
                     return BadRequest();
                 con.Open();
-
                 item = GetUser(item);
-                if (CheckExistingRating(item))
+                if(CheckExistingRating(item)) // if the user has already rated the movie in the specific cinema then dont insert
                     return BadRequest();
 
                 using (SqlCommand addRating =
                     new SqlCommand(String.Format(@"INSERT INTO USERRATING
                               (ID_USER, ID_MOVIE, ID_CINEMA, ID_STRINGUSER, CLEANLINESS, POPCORN, SCREEN, SEAT, SOUND)
-                        VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", item.Id_User, item.Id_Movie,
+                        VALUES({0}, {1}, {2}, '{3}', {4}, {5}, {6}, {7}, {8})", item.Id_User, item.Id_Movie,
                             item.Id_Cinema
                             , item.Id_StringUser, item.Cleanliness, item.Popcorn, item.Screen, item.Seat, item.Sound),
                         con)
@@ -101,7 +93,7 @@ namespace EPertuarWeb.Controllers
         private bool CheckExistingRating(RatingItem item)
         {
             using (SqlCommand getRating =
-                new SqlCommand(String.Format(@"SELECT * FROM [USERRATING] WHERE Id_User={0} AND Id_Cinema={1}, AND Id_Movie={2}", item.Id_User, item.Id_Cinema, item.Id_Movie),
+                new SqlCommand(String.Format(@"SELECT * FROM [USERRATING] WHERE Id_User={0} AND Id_Cinema={1} AND Id_Movie={2}", item.Id_User, item.Id_Cinema, item.Id_Movie),
                     con)
             )
             {
