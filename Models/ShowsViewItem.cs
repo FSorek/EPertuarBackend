@@ -20,7 +20,7 @@ namespace EPertuarWeb.Models
         public string MovieName { get; set; }
         public List<CompactShow> ShowList { get; set; }
         public List<String> Genres { get; set; }
-        public float averageRating { get; set; }
+        public double averageRating { get; set; }
     }
 
     public class CompactShow
