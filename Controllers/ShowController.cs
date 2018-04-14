@@ -150,9 +150,11 @@ namespace EPertuarWeb.Controllers
         private List<ShowsViewItem> GetMovies(List<ShowsViewItem> ShowsView)
         {
             foreach (var cinemaItem in ShowsView)
-                using (SqlCommand getMoviesPlayed = new SqlCommand(@"Select Movie.[Original_Name] from Show 
+                using (SqlCommand getMoviesPlayed = new SqlCommand(@"Select Movie.[Original_Name], SUM((UserRating.Cleanliness + UserRating.Popcorn + UserRating.Screen + UserRating.Seat + UserRating.Sound)/5)/COUNT(UserRating.Cleanliness) 
+                                                                AS Average from Show 
                                                                 INNER JOIN Movie ON Show.Id_Movie=Movie.Id_Movie 
                                                                 INNER JOIN Cinema ON Show.Id_Cinema=Cinema.Id_Cinema
+                                                                LEFT JOIN UserRating ON Movie.Id_Movie=UserRating.Id_Movie
                                                                 WHERE Cinema.Id_Cinema=" + cinemaItem.IdCinema + @"
                                                                 GROUP BY Movie.[Original_Name]", con)
             )
@@ -166,6 +168,7 @@ namespace EPertuarWeb.Controllers
                             movie.ShowList = new List<CompactShow>();
                             movie.Genres = new List<string>();
                             cinemaItem.Movies.Add(movie);
+                            movie.averageRating = (movieReader.IsDBNull(1)) ?  0f : movieReader.GetFloat(1);
                         }
                         cinemaItem.Movies = AddShows(cinemaItem);
                         cinemaItem.Movies = AddGenres(cinemaItem);
