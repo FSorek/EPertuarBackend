@@ -13106,11 +13106,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Git\\EPertuarBackend\\EPertuarWeb.csproj",
+      "projectUniqueName": "C:\\Users\\okito\\source\\repos\\EPertuarBackend\\EPertuarWeb.csproj",
       "projectName": "EPertuarWeb",
-      "projectPath": "D:\\Git\\EPertuarBackend\\EPertuarWeb.csproj",
+      "projectPath": "C:\\Users\\okito\\source\\repos\\EPertuarBackend\\EPertuarWeb.csproj",
       "packagesPath": "C:\\Users\\okito\\.nuget\\packages\\",
-      "outputPath": "D:\\Git\\EPertuarBackend\\obj\\",
+      "outputPath": "C:\\Users\\okito\\source\\repos\\EPertuarBackend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EPertuarWeb.Controllers
 {
+
+
+
     [Produces("application/json")]
     [Route("api/Cinema")]
     public class CinemaController : Controller
@@ -44,9 +47,6 @@ namespace EPertuarWeb.Controllers
             con.Close();
             return Cinemas.ToArray();
         }
-
-
-
 
         [Route("Cities")]
         [HttpGet]
