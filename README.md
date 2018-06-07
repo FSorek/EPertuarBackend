@@ -4,7 +4,7 @@ API Link
 https://epertuar.azurewebsites.net/api
 
 Shows based on city:
-https://epertuar.azurewebsites.net/api/{CITY}
+https://epertuar.azurewebsites.net/api/show/{CITY}
 
 Cities list:
 https://epertuar.azurewebsites.net/api/cinema/cities
